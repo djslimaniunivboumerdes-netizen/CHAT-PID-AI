@@ -35,7 +35,7 @@ COPY . /app/
 RUN mkdir -p uploads exports sample_data static
 
 # Expose FastAPI default port
-EXPOSE 8000
+EXPOSE 7860
 
 # Run FastAPI server via Uvicorn
-CMD ["uvicorn", "main:app", "--host", "0.0.0.0", "--port", "8000", "--workers", "1"]
+CMD ["uvicorn", "main:app", "--host", "0.0.0.0", "--port", "7860", "--workers", "1"]
