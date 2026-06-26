@@ -1,0 +1,792 @@
+:root {
+    --bg-main: #0f172a;
+    --bg-card: #1e293b;
+    --bg-card-hover: #334155;
+    --border-color: #334155;
+    --text-main: #f8fafc;
+    --text-muted: #94a3b8;
+    --primary: #3b82f6;
+    --primary-hover: #2563eb;
+    --success: #10b981;
+    --warning: #f59e0b;
+    --danger: #ef4444;
+    --font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+}
+
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    font-family: var(--font-family);
+    background-color: var(--bg-main);
+    color: var(--text-main);
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+}
+
+/* Top Navigation Bar */
+header {
+    height: 64px;
+    background-color: var(--bg-card);
+    border-bottom: 1px solid var(--border-color);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 24px;
+    z-index: 50;
+}
+
+.logo-container {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.logo-icon {
+    width: 36px;
+    height: 36px;
+    background-color: var(--primary);
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: bold;
+    font-size: 18px;
+    color: white;
+    box-shadow: 0 0 15px rgba(59, 130, 246, 0.5);
+}
+
+.logo-text {
+    font-size: 22px;
+    font-weight: 700;
+    letter-spacing: -0.5px;
+    color: var(--text-main);
+}
+
+.logo-accent {
+    color: var(--primary);
+}
+
+/* 4-Step Workflow Progress Bar */
+.workflow-steps {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+}
+
+.step-item {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    color: var(--text-muted);
+    font-size: 14px;
+    font-weight: 500;
+    cursor: pointer;
+    padding: 6px 12px;
+    border-radius: 20px;
+    transition: all 0.2s;
+}
+
+.step-item.active {
+    color: white;
+    background-color: rgba(59, 130, 246, 0.2);
+    border: 1px solid var(--primary);
+}
+
+.step-item.completed {
+    color: var(--success);
+}
+
+.step-number {
+    width: 24px;
+    height: 24px;
+    border-radius: 50%;
+    background-color: var(--bg-card-hover);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 12px;
+    font-weight: 700;
+}
+
+.step-item.active .step-number {
+    background-color: var(--primary);
+    color: white;
+}
+
+.step-item.completed .step-number {
+    background-color: var(--success);
+    color: white;
+}
+
+.step-divider {
+    width: 30px;
+    height: 2px;
+    background-color: var(--border-color);
+}
+
+.step-divider.completed {
+    background-color: var(--success);
+}
+
+.header-actions {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.btn {
+    padding: 8px 16px;
+    border-radius: 6px;
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+    border: none;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    transition: all 0.2s;
+}
+
+.btn-primary {
+    background-color: var(--primary);
+    color: white;
+}
+
+.btn-primary:hover {
+    background-color: var(--primary-hover);
+}
+
+.btn-secondary {
+    background-color: var(--bg-card-hover);
+    color: var(--text-main);
+    border: 1px solid var(--border-color);
+}
+
+.btn-secondary:hover {
+    background-color: #475569;
+}
+
+.btn-success {
+    background-color: var(--success);
+    color: white;
+}
+
+/* Main Content Container */
+main {
+    flex: 1;
+    display: flex;
+    position: relative;
+    overflow: hidden;
+}
+
+.view-screen {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    display: none;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 32px;
+    background-color: var(--bg-main);
+}
+
+.view-screen.active {
+    display: flex;
+}
+
+/* STEP 1: Upload View */
+.upload-card {
+    width: 100%;
+    max-width: 680px;
+    background-color: var(--bg-card);
+    border: 2px dashed var(--border-color);
+    border-radius: 16px;
+    padding: 48px 32px;
+    text-align: center;
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3);
+}
+
+.upload-icon {
+    width: 84px;
+    height: 84px;
+    margin: 0 auto 24px auto;
+    color: var(--primary);
+}
+
+.upload-title {
+    font-size: 24px;
+    font-weight: 700;
+    margin-bottom: 12px;
+}
+
+.upload-subtitle {
+    color: var(--text-muted);
+    font-size: 15px;
+    margin-bottom: 32px;
+}
+
+.upload-buttons {
+    display: flex;
+    justify-content: center;
+    gap: 16px;
+}
+
+.recent-files {
+    margin-top: 36px;
+    width: 100%;
+    max-width: 680px;
+}
+
+.recent-files-title {
+    font-size: 14px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    color: var(--text-muted);
+    margin-bottom: 12px;
+    text-align: left;
+}
+
+.file-list-item {
+    background-color: var(--bg-card);
+    border: 1px solid var(--border-color);
+    border-radius: 8px;
+    padding: 16px 20px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 10px;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.file-list-item:hover {
+    border-color: var(--primary);
+    background-color: var(--bg-card-hover);
+}
+
+.file-info {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+}
+
+.file-icon {
+    color: var(--danger);
+}
+
+.file-name {
+    font-weight: 600;
+    font-size: 16px;
+}
+
+.file-meta {
+    color: var(--text-muted);
+    font-size: 13px;
+    margin-top: 4px;
+}
+
+/* STEP 2: Tool Selection View */
+.tools-container {
+    width: 100%;
+    max-width: 1000px;
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    justify-content: center;
+}
+
+.tools-header {
+    margin-bottom: 32px;
+    text-align: center;
+}
+
+.tools-title {
+    font-size: 28px;
+    font-weight: 700;
+    margin-bottom: 8px;
+}
+
+.tools-subtitle {
+    color: var(--text-muted);
+    font-size: 16px;
+}
+
+.tools-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 24px;
+    margin-bottom: 40px;
+}
+
+.tool-card {
+    background-color: var(--bg-card);
+    border: 2px solid var(--border-color);
+    border-radius: 12px;
+    padding: 24px;
+    cursor: pointer;
+    transition: all 0.2s;
+    display: flex;
+    flex-direction: column;
+    position: relative;
+    overflow: hidden;
+}
+
+.tool-card:hover {
+    border-color: #64748b;
+    transform: translateY(-4px);
+}
+
+.tool-card.selected {
+    border-color: var(--primary);
+    background-color: rgba(59, 130, 246, 0.05);
+}
+
+.tool-card.selected::after {
+    content: "✓ SELECTED";
+    position: absolute;
+    top: 12px;
+    right: 12px;
+    background-color: var(--primary);
+    color: white;
+    font-size: 10px;
+    font-weight: 800;
+    padding: 4px 8px;
+    border-radius: 12px;
+}
+
+.tool-icon-wrapper {
+    width: 48px;
+    height: 48px;
+    border-radius: 10px;
+    background-color: var(--bg-card-hover);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 16px;
+    color: var(--primary);
+}
+
+.tool-card.selected .tool-icon-wrapper {
+    background-color: var(--primary);
+    color: white;
+}
+
+.tool-name {
+    font-size: 18px;
+    font-weight: 700;
+    margin-bottom: 8px;
+}
+
+.tool-desc {
+    color: var(--text-muted);
+    font-size: 14px;
+    line-height: 1.5;
+    flex: 1;
+}
+
+.tool-actions {
+    display: flex;
+    justify-content: flex-end;
+    gap: 16px;
+}
+
+/* STEP 3: Processing View */
+.processing-card {
+    width: 100%;
+    max-width: 600px;
+    background-color: var(--bg-card);
+    border: 1px solid var(--border-color);
+    border-radius: 16px;
+    padding: 48px 40px;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.4);
+}
+
+.processing-header {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    margin-bottom: 36px;
+}
+
+.spinner {
+    width: 54px;
+    height: 54px;
+    border: 5px solid var(--bg-card-hover);
+    border-top-color: var(--primary);
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+    to { transform: rotate(360deg); }
+}
+
+.processing-title {
+    font-size: 22px;
+    font-weight: 700;
+    margin-bottom: 6px;
+}
+
+.processing-filename {
+    color: var(--primary);
+    font-family: monospace;
+    font-size: 15px;
+}
+
+.progress-bar-container {
+    width: 100%;
+    height: 10px;
+    background-color: var(--bg-card-hover);
+    border-radius: 5px;
+    overflow: hidden;
+    margin-bottom: 32px;
+}
+
+.progress-bar-fill {
+    height: 100%;
+    width: 0%;
+    background-color: var(--primary);
+    transition: width 0.3s ease;
+}
+
+.processing-logs {
+    background-color: var(--bg-main);
+    border: 1px solid var(--border-color);
+    border-radius: 8px;
+    padding: 20px;
+    font-family: monospace;
+    font-size: 13px;
+    color: var(--text-muted);
+    height: 200px;
+    overflow-y: auto;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.log-entry {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.log-entry.success { color: var(--success); }
+.log-entry.running { color: var(--primary); }
+.log-entry.pending { color: var(--text-muted); }
+
+/* STEP 4: Results Master Split View */
+.results-container {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    display: none;
+    flex-direction: row;
+}
+
+.results-container.active {
+    display: flex;
+}
+
+/* Left Side: Interactive Canvas Viewer */
+.viewer-panel {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    position: relative;
+    background-color: #0b0f19;
+    overflow: hidden;
+}
+
+.canvas-toolbar {
+    position: absolute;
+    top: 20px;
+    left: 20px;
+    background-color: var(--bg-card);
+    border: 1px solid var(--border-color);
+    border-radius: 8px;
+    padding: 6px;
+    display: flex;
+    gap: 6px;
+    z-index: 20;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.5);
+}
+
+.toolbar-btn {
+    width: 36px;
+    height: 36px;
+    border-radius: 6px;
+    background-color: transparent;
+    border: none;
+    color: var(--text-main);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.toolbar-btn:hover {
+    background-color: var(--bg-card-hover);
+    color: var(--primary);
+}
+
+.canvas-container {
+    width: 100%;
+    height: 100%;
+    position: relative;
+    cursor: grab;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    user-select: none;
+}
+
+.canvas-container:active {
+    cursor: grabbing;
+}
+
+/* Simulated P&ID Diagram inside Canvas */
+.diagram-artboard {
+    width: 900px;
+    height: 650px;
+    background-color: #f1f5f9;
+    border: 2px solid #cbd5e1;
+    box-shadow: 0 0 30px rgba(0,0,0,0.5);
+    position: relative;
+    transform-origin: center center;
+    transition: transform 0.4s cubic-bezier(0.1, 0.9, 0.2, 1);
+    color: #0f172a;
+    font-family: monospace;
+    overflow: hidden;
+}
+
+.diagram-real-image {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    position: absolute;
+    top: 0;
+    left: 0;
+    z-index: 1;
+}
+
+/* Engineering Grid Lines */
+.diagram-artboard::before {
+    content: "";
+    position: absolute;
+    top: 0; left: 0; width: 100%; height: 100%;
+    background-image: linear-gradient(to right, #e2e8f0 1px, transparent 1px),
+                      linear-gradient(to bottom, #e2e8f0 1px, transparent 1px);
+    background-size: 25px 25px;
+    pointer-events: none;
+}
+
+/* P&ID Drawing Entities */
+.entity-symbol {
+    position: absolute;
+    border: 2px solid #1e293b;
+    background-color: white;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    font-weight: bold;
+    font-size: 13px;
+    z-index: 10;
+    transition: all 0.3s;
+}
+
+.vessel { border-radius: 20px; }
+.pump { border-radius: 50%; }
+.valve { background-color: transparent; border: none; }
+.valve svg { width: 100%; height: 100%; stroke: #1e293b; stroke-width: 2; fill: white; transition: all 0.3s; }
+.instrument { border-radius: 50%; border: 2px solid #1e293b; }
+.instrument-line { width: 100%; height: 2px; background-color: #1e293b; position: absolute; top: 50%; }
+
+.tag-text {
+    position: absolute;
+    font-size: 13px;
+    font-weight: 700;
+    color: #0f172a;
+    background-color: rgba(255,255,255,0.85);
+    padding: 2px 6px;
+    border-radius: 4px;
+    border: 1px solid #cbd5e1;
+    pointer-events: none;
+    z-index: 12;
+}
+
+.pipe-line { position: absolute; background-color: #1e293b; z-index: 5; transition: all 0.3s; }
+.pipe-label { position: absolute; font-size: 11px; font-weight: 600; color: #1e293b; background: white; padding: 2px 4px; border: 1px solid #94a3b8; z-index: 12; }
+
+/* Dynamic Bounding Box Overlay */
+.bounding-box {
+    position: absolute;
+    border: 3px solid var(--danger);
+    background-color: rgba(239, 68, 68, 0.2);
+    z-index: 30;
+    display: none;
+    pointer-events: none;
+    animation: pulse-box 1.5s infinite;
+}
+
+@keyframes pulse-box {
+    0% { box-shadow: 0 0 0 0 rgba(239, 68, 68, 0.7); }
+    70% { box-shadow: 0 0 0 15px rgba(239, 68, 68, 0); }
+    100% { box-shadow: 0 0 0 0 rgba(239, 68, 68, 0); }
+}
+
+/* Color-Coded Status overrides */
+.color-code-red { background-color: var(--danger) !important; stroke: var(--danger) !important; color: white !important; fill: var(--danger) !important; }
+.color-code-blue { background-color: var(--primary) !important; stroke: var(--primary) !important; color: white !important; fill: var(--primary) !important; }
+.color-code-green { background-color: var(--success) !important; stroke: var(--success) !important; color: white !important; fill: var(--success) !important; }
+.color-code-yellow { background-color: var(--warning) !important; stroke: var(--warning) !important; color: #0f172a !important; fill: var(--warning) !important; }
+
+.diagram-footer {
+    position: absolute;
+    bottom: 10px;
+    right: 20px;
+    font-size: 14px;
+    font-weight: bold;
+    color: #475569;
+    background: white;
+    padding: 6px 12px;
+    border: 2px solid #cbd5e1;
+    z-index: 15;
+}
+
+/* Right Side: Analysis Tool Results Panel */
+.results-panel {
+    width: 550px;
+    background-color: var(--bg-card);
+    border-left: 1px solid var(--border-color);
+    display: flex;
+    flex-direction: column;
+    z-index: 20;
+    box-shadow: -5px 0 25px rgba(0,0,0,0.3);
+}
+
+.panel-nav {
+    display: flex;
+    border-bottom: 1px solid var(--border-color);
+    background-color: #1a2332;
+    overflow-x: auto;
+}
+
+.panel-tab {
+    padding: 16px 20px;
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--text-muted);
+    cursor: pointer;
+    border-bottom: 2px solid transparent;
+    white-space: nowrap;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    transition: all 0.2s;
+}
+
+.panel-tab:hover {
+    color: var(--text-main);
+    background-color: var(--bg-card-hover);
+}
+
+.panel-tab.active {
+    color: var(--primary);
+    border-bottom-color: var(--primary);
+    background-color: var(--bg-card);
+}
+
+.panel-content-wrapper {
+    flex: 1;
+    padding: 24px;
+    overflow-y: auto;
+}
+
+.panel-view {
+    display: none;
+    flex-direction: column;
+    gap: 24px;
+}
+
+.panel-view.active {
+    display: flex;
+}
+
+.panel-section-title {
+    font-size: 20px;
+    font-weight: 700;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+/* Tool 1: Inventory Generator View */
+.filter-pills { display: flex; gap: 10px; margin-bottom: 16px; }
+.filter-pill { padding: 6px 14px; border-radius: 20px; font-size: 13px; font-weight: 600; background-color: var(--bg-card-hover); color: var(--text-muted); cursor: pointer; border: 1px solid var(--border-color); transition: all 0.2s; }
+.filter-pill.active { background-color: var(--primary); color: white; border-color: var(--primary); }
+
+.inventory-table { width: 100%; border-collapse: collapse; background-color: var(--bg-main); border-radius: 8px; overflow: hidden; border: 1px solid var(--border-color); }
+.inventory-table th, .inventory-table td { padding: 14px 16px; text-align: left; font-size: 14px; border-bottom: 1px solid var(--border-color); }
+.inventory-table th { background-color: var(--bg-card-hover); font-weight: 600; color: var(--text-muted); }
+.inventory-table tr:hover { background-color: rgba(255,255,255,0.02); }
+
+.tag-badge { background-color: rgba(59, 130, 246, 0.2); color: #60a5fa; padding: 4px 8px; border-radius: 4px; font-weight: 700; font-family: monospace; }
+
+/* Tool 2: Smart Search View */
+.search-box-container { display: flex; gap: 12px; }
+.search-input { flex: 1; padding: 12px 16px; border-radius: 8px; background-color: var(--bg-main); border: 1px solid var(--border-color); color: white; font-size: 15px; outline: none; }
+.search-input:focus { border-color: var(--primary); }
+.search-results-list { display: flex; flex-direction: column; gap: 12px; }
+.search-result-item { background-color: var(--bg-main); border: 1px solid var(--border-color); border-radius: 8px; padding: 16px; display: flex; align-items: center; justify-content: space-between; cursor: pointer; transition: all 0.2s; }
+.search-result-item:hover { border-color: var(--primary); background-color: var(--bg-card-hover); }
+
+/* Tool 3: Smart Map View */
+.map-graph-box { background-color: var(--bg-main); border: 1px solid var(--border-color); border-radius: 8px; padding: 20px; }
+.graph-path { display: flex; align-items: center; justify-content: space-between; background-color: var(--bg-card); padding: 16px; border-radius: 8px; border: 1px solid var(--border-color); margin-bottom: 12px; cursor: pointer; }
+.graph-path:hover { border-color: var(--primary); }
+.path-node { font-weight: bold; font-size: 15px; display: flex; align-items: center; gap: 8px; }
+.path-edge { color: var(--primary); font-family: monospace; font-weight: 600; font-size: 13px; display: flex; align-items: center; gap: 6px; }
+
+/* Tool 4: AI HAZOP View */
+.hazop-card { background-color: var(--bg-main); border: 1px solid var(--border-color); border-left: 4px solid var(--warning); border-radius: 8px; padding: 20px; display: flex; flex-direction: column; gap: 14px; }
+.hazop-header { display: flex; align-items: center; justify-content: space-between; }
+.deviation-badge { background-color: rgba(245, 158, 11, 0.2); color: var(--warning); padding: 4px 10px; border-radius: 12px; font-size: 13px; font-weight: 700; }
+.hazop-desc { font-size: 15px; line-height: 1.5; color: #e2e8f0; }
+
+/* Tool 5: Color-Coded Status View */
+.rule-card { background-color: var(--bg-main); border: 1px solid var(--border-color); border-radius: 8px; padding: 16px; display: flex; align-items: center; justify-content: space-between; }
+.rule-def { display: flex; align-items: center; gap: 12px; }
+.color-dot { width: 20px; height: 20px; border-radius: 50%; }
+.color-dot.red { background-color: var(--danger); }
+.color-dot.blue { background-color: var(--primary); }
+.color-dot.green { background-color: var(--success); }
+.color-dot.yellow { background-color: var(--warning); }
+.rule-text { font-size: 15px; font-weight: 600; }
+.toggle-switch { width: 48px; height: 26px; background-color: var(--bg-card-hover); border-radius: 13px; padding: 3px; cursor: pointer; transition: all 0.3s; }
+.toggle-switch.active { background-color: var(--primary); }
+.toggle-knob { width: 20px; height: 20px; background-color: white; border-radius: 50%; transition: transform 0.3s; }
+.toggle-switch.active .toggle-knob { transform: translateX(22px); }
+
+/* Tool 6: AI Inspector View */
+.inspector-card { background-color: var(--bg-main); border: 1px solid var(--border-color); border-left: 4px solid var(--danger); border-radius: 8px; padding: 20px; display: flex; flex-direction: column; gap: 14px; }
+.inspector-badge { background-color: rgba(239, 68, 68, 0.2); color: var(--danger); padding: 4px 10px; border-radius: 12px; font-size: 13px; font-weight: 700; }
+
+/* Modal Overlay for Exports */
+.modal-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background-color: rgba(0,0,0,0.7); z-index: 100; display: none; align-items: center; justify-content: center; }
+.modal-card { width: 100%; max-width: 500px; background-color: var(--bg-card); border: 1px solid var(--border-color); border-radius: 16px; padding: 32px; box-shadow: 0 10px 40px rgba(0,0,0,0.5); text-align: center; }
+.modal-title { font-size: 22px; font-weight: 700; margin-bottom: 12px; }
+.modal-text { color: var(--text-muted); font-size: 15px; margin-bottom: 28px; line-height: 1.5; }
+.modal-buttons { display: flex; justify-content: center; gap: 16px; }

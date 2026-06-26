@@ -1,0 +1,27 @@
+version: '3.8'
+
+services:
+  pid_ai:
+    build: .
+    container_name: pid_ai_app
+    restart: unless-stopped
+    ports:
+      - "8000:8000"
+    environment:
+      - DATABASE_URL=sqlite:///./pid_ai.db
+      - OLLAMA_URL=http://host.docker.internal:11434
+    volumes:
+      - ./uploads:/app/uploads
+      - ./exports:/app/exports
+      - pid_ai_db:/app
+    # Optional GPU support for NVIDIA if available on host machine
+    # deploy:
+    #   resources:
+    #     reservations:
+    #       devices:
+    #         - driver: nvidia
+    #           count: all
+    #           capabilities: [gpu]
+
+volumes:
+  pid_ai_db:

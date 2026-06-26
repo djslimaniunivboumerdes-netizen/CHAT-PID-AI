@@ -1,0 +1,423 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>pid_ai - Automated P&ID Analysis Studio</title>
+    <link rel="stylesheet" href="/static/styles.css">
+</head>
+<body>
+
+    <!-- Top Navigation Bar -->
+    <header>
+        <div class="logo-container">
+            <div class="logo-icon">P</div>
+            <div class="logo-text">pid<span class="logo-accent">_ai</span></div>
+        </div>
+
+        <div class="workflow-steps">
+            <div class="step-item active" id="nav-step-1" onclick="goToStep(1)">
+                <div class="step-number">1</div>
+                <div>Upload</div>
+            </div>
+            <div class="step-divider" id="div-step-1"></div>
+            <div class="step-item" id="nav-step-2" onclick="goToStep(2)">
+                <div class="step-number">2</div>
+                <div>Tool Selection</div>
+            </div>
+            <div class="step-divider" id="div-step-2"></div>
+            <div class="step-item" id="nav-step-3" onclick="goToStep(3)">
+                <div class="step-number">3</div>
+                <div>Processing</div>
+            </div>
+            <div class="step-divider" id="div-step-3"></div>
+            <div class="step-item" id="nav-step-4" onclick="goToStep(4)">
+                <div class="step-number">4</div>
+                <div>Results</div>
+            </div>
+        </div>
+
+        <div class="header-actions">
+            <button class="btn btn-secondary" onclick="showModal('help')">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"></circle><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"></path><line x1="12" y1="17" x2="12.01" y2="17"></line></svg>
+                Documentation
+            </button>
+            <button class="btn btn-success" onclick="triggerExcelExport()" id="hdr-btn-excel" style="display: none;">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" y1="13" x2="8" y2="13"></line><line x1="16" y1="17" x2="8" y2="17"></line><polyline points="10 9 9 9 8 9"></polyline></svg>
+                Export Excel Model
+            </button>
+        </div>
+    </header>
+
+    <!-- Main Content Container -->
+    <main>
+        
+        <!-- STEP 1: UPLOAD SCREEN -->
+        <div class="view-screen active" id="screen-step-1">
+            <div class="upload-card">
+                <svg class="upload-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="17 8 12 3 7 8"></polyline><line x1="12" y1="3" x2="12" y2="15"></line></svg>
+                <div class="upload-title">Upload P&ID Document</div>
+                <div class="upload-subtitle">Drag and drop your engineering PDF, PNG, JPG, or TIFF drawing to begin AI analysis.</div>
+                
+                <input type="file" id="file-input" style="display: none;" accept=".pdf,.png,.jpg,.jpeg,.tiff" onchange="handleFileUpload(event)">
+
+                <div class="upload-buttons">
+                    <button class="btn btn-primary" onclick="document.getElementById('file-input').click()">
+                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="17 8 12 3 7 8"></polyline><line x1="12" y1="3" x2="12" y2="15"></line></svg>
+                        Browse Computer Files
+                    </button>
+                    <button class="btn btn-secondary" onclick="loadSampleDocument()">
+                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path></svg>
+                        Use Sample: PID_Unit_101.pdf
+                    </button>
+                </div>
+            </div>
+
+            <div class="recent-files">
+                <div class="recent-files-title">Recently Processed P&IDs</div>
+                <div class="file-list-item" onclick="loadSampleDocument()">
+                    <div class="file-info">
+                        <svg class="file-icon" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline></svg>
+                        <div>
+                            <div class="file-name">PID_Crude_Distillation_Rev2.pdf</div>
+                            <div class="file-meta">Uploaded by Alex M. • 4.2 MB • 2 hours ago</div>
+                        </div>
+                    </div>
+                    <button class="btn btn-secondary">Open Studio</button>
+                </div>
+                <div class="file-list-item" onclick="loadSampleDocument()">
+                    <div class="file-info">
+                        <svg class="file-icon" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline></svg>
+                        <div>
+                            <div class="file-name">PID_Ammonia_Synthesis_Loop.pdf</div>
+                            <div class="file-meta">Uploaded by Sarah T. • 8.1 MB • Yesterday</div>
+                        </div>
+                    </div>
+                    <button class="btn btn-secondary">Open Studio</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- STEP 2: TOOL SELECTION SCREEN -->
+        <div class="view-screen" id="screen-step-2">
+            <div class="tools-container">
+                <div class="tools-header">
+                    <div class="tools-title">Select Analysis Tool Suite</div>
+                    <div class="tools-subtitle">Choose the dedicated engineering analytics modules to activate for this drawing.</div>
+                </div>
+
+                <div class="tools-grid">
+                    <div class="tool-card selected" onclick="toggleTool(this)">
+                        <div class="tool-icon-wrapper">
+                            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect><line x1="3" y1="9" x2="21" y2="9"></line><line x1="9" y1="21" x2="9" y2="9"></line></svg>
+                        </div>
+                        <div class="tool-name">Inventory Generator</div>
+                        <div class="tool-desc">Compile categorized lists of detected equipment, piping, instruments, and valves. Includes PDF export.</div>
+                    </div>
+
+                    <div class="tool-card selected" onclick="toggleTool(this)">
+                        <div class="tool-icon-wrapper">
+                            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line><line x1="11" y1="8" x2="11" y2="14"></line><line x1="8" y1="11" x2="14" y2="11"></line></svg>
+                        </div>
+                        <div class="tool-name">Smart Search</div>
+                        <div class="tool-desc">Rapidly query and instantly pan/zoom to specific equipment tags (e.g., V-101) with bounding box highlighting.</div>
+                    </div>
+
+                    <div class="tool-card selected" onclick="toggleTool(this)">
+                        <div class="tool-icon-wrapper">
+                            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="18" cy="5" r="3"></circle><circle cx="6" cy="12" r="3"></circle><circle cx="18" cy="19" r="3"></circle><line x1="8.59" y1="13.51" x2="15.42" y2="17.49"></line><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"></line></svg>
+                        </div>
+                        <div class="tool-name">Smart Map (Line Tracing)</div>
+                        <div class="tool-desc">Algorithmically trace pipelines to establish connectivity graphs between source and destination equipment.</div>
+                    </div>
+
+                    <div class="tool-card selected" onclick="toggleTool(this)">
+                        <div class="tool-icon-wrapper">
+                            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"></path><line x1="12" y1="9" x2="12" y2="13"></line><line x1="12" y1="17" x2="12.01" y2="17"></line></svg>
+                        </div>
+                        <div class="tool-name">AI HAZOP Assistant</div>
+                        <div class="tool-desc">Automated identification of potential HAZOP deviations (No Flow, High Pressure) based on topological analysis.</div>
+                    </div>
+
+                    <div class="tool-card selected" onclick="toggleTool(this)">
+                        <div class="tool-icon-wrapper">
+                            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"></circle><path d="M12 2a15 15 0 0 1 10 10 15 15 0 0 1-10 10 15 15 0 0 1-10-10 15 15 0 0 1 10-10z"></path></svg>
+                        </div>
+                        <div class="tool-name">Color-Coded Status</div>
+                        <div class="tool-desc">Dynamically assign custom color layers to pipes and equipment based on custom rules (size, operational status).</div>
+                    </div>
+
+                    <div class="tool-card selected" onclick="toggleTool(this)">
+                        <div class="tool-icon-wrapper">
+                            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="12 2 15 8.5 22 9.5 17 14 18.5 21 12 17.5 5.5 21 7 14 2 9.5 9 8.5 12 2"></polygon></svg>
+                        </div>
+                        <div class="tool-name">AI Inspector</div>
+                        <div class="tool-desc">Automatically identify engineering spec mismatches (e.g., 4" pipe on 2" valve) and API/ASME safety relief omissions.</div>
+                    </div>
+                </div>
+
+                <div class="tool-actions">
+                    <button class="btn btn-secondary" onclick="goToStep(1)">Back to Upload</button>
+                    <button class="btn btn-primary" onclick="startAIProcessing()">
+                        Proceed to Processing
+                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- STEP 3: PROCESSING SCREEN -->
+        <div class="view-screen" id="screen-step-3">
+            <div class="processing-card">
+                <div class="processing-header">
+                    <div class="spinner"></div>
+                    <div>
+                        <div class="processing-title">AI Processing Engine Active</div>
+                        <div class="processing-filename" id="proc-filename">Target: PID_Unit_101.pdf</div>
+                    </div>
+                </div>
+
+                <div class="progress-bar-container">
+                    <div class="progress-bar-fill" id="progress-fill"></div>
+                </div>
+
+                <div class="processing-logs" id="log-container">
+                    <div class="log-entry pending" id="log-1">[0.0s] Enqueuing task to Celery worker queue...</div>
+                    <div class="log-entry pending" id="log-2">[1.2s] Executing YOLOv8 / RT-DETR Symbol Detection model...</div>
+                    <div class="log-entry pending" id="log-3">[2.5s] Extracting text bounding boxes via EasyOCR & ADE...</div>
+                    <div class="log-entry pending" id="log-4">[3.8s] Performing OpenCV morphological line tracing...</div>
+                    <div class="log-entry pending" id="log-5">[5.1s] Building NetworkX topological connectivity graph...</div>
+                    <div class="log-entry pending" id="log-6">[6.4s] Structuring Excel Data Model & initializing Tool Suite...</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- STEP 4: RESULTS MASTER SPLIT VIEW -->
+        <div class="results-container" id="screen-step-4">
+            
+            <!-- LEFT PANEL: Interactive Canvas Viewer -->
+            <div class="viewer-panel">
+                <div class="canvas-toolbar">
+                    <button class="toolbar-btn" title="Zoom In" onclick="zoomCanvas(0.2)"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line><line x1="11" y1="8" x2="11" y2="14"></line><line x1="8" y1="11" x2="14" y2="11"></line></svg></button>
+                    <button class="toolbar-btn" title="Zoom Out" onclick="zoomCanvas(-0.2)"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line><line x1="8" y1="11" x2="14" y2="11"></line></svg></button>
+                    <button class="toolbar-btn" title="Reset Zoom" onclick="resetCanvas()"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path></svg></button>
+                </div>
+
+                <div class="canvas-container" id="pan-container">
+                    
+                    <!-- SIMULATED P&ID DIAGRAM ARTBOARD -->
+                    <div class="diagram-artboard" id="diagram-stage">
+                        
+                        <!-- Real uploaded image background if available -->
+                        <img id="real-uploaded-image" class="diagram-real-image" style="display: none;" src="" alt="Uploaded P&ID">
+
+                        <!-- Header / Title block -->
+                        <div class="diagram-footer" id="diag-footer-text">PID-UNIT-101 | REV 3 | ARENA ENERGY CORP</div>
+
+                        <!-- DYNAMIC HIGHLIGHT BOUNDING BOX -->
+                        <div class="bounding-box" id="bbox-highlight"></div>
+
+                        <!-- FALLBACK SIMULATED SVG/DOM ENTITIES (Displayed if no real image or as baseline demo) -->
+                        <div id="simulated-elements-layer">
+                            <!-- Vessel V-101 -->
+                            <div class="entity-symbol vessel" id="entity-v101" style="width: 180px; height: 300px; top: 80px; left: 350px;">
+                                <div style="font-size: 22px;">V-101</div>
+                                <div style="font-size: 12px; font-weight: normal;">Distillation Column</div>
+                            </div>
+                            <div class="tag-text" style="top: 50px; left: 400px;">TAG: V-101</div>
+
+                            <!-- Pump P-101A -->
+                            <div class="entity-symbol pump" id="entity-p101a" style="width: 100px; height: 100px; top: 480px; left: 180px;">
+                                <div style="font-size: 18px;">P-101A</div>
+                            </div>
+                            <div class="tag-text" style="top: 590px; left: 190px;">TAG: P-101A</div>
+
+                            <!-- Pump P-101B -->
+                            <div class="entity-symbol pump" id="entity-p101b" style="width: 100px; height: 100px; top: 480px; left: 600px;">
+                                <div style="font-size: 18px;">P-101B</div>
+                            </div>
+                            <div class="tag-text" style="top: 590px; left: 610px;">TAG: P-101B</div>
+
+                            <!-- Valve VLV-201 -->
+                            <div class="entity-symbol valve" id="entity-vlv201" style="width: 40px; height: 30px; top: 420px; left: 210px;">
+                                <svg viewBox="0 0 40 30"><polygon points="0,0 40,30 40,0 0,30"></polygon></svg>
+                            </div>
+                            <div class="tag-text" style="top: 425px; left: 130px;">VLV-201</div>
+
+                            <!-- Valve VLV-204 -->
+                            <div class="entity-symbol valve" id="entity-vlv204" style="width: 40px; height: 30px; top: 420px; left: 630px;">
+                                <svg viewBox="0 0 40 30"><polygon points="0,0 40,30 40,0 0,30"></polygon></svg>
+                            </div>
+                            <div class="tag-text" style="top: 425px; left: 685px;">VLV-204</div>
+
+                            <!-- Instrument TIC-203 -->
+                            <div class="entity-symbol instrument" id="entity-tic203" style="width: 65px; height: 65px; top: 120px; left: 600px;">
+                                <div class="instrument-line"></div>
+                                <div style="margin-bottom: 12px; font-size: 14px;">TIC</div>
+                                <div style="font-size: 14px;">203</div>
+                            </div>
+
+                            <!-- PIPELINES -->
+                            <div class="pipe-line pipe-4inch" style="width: 4px; height: 60px; top: 380px; left: 438px;"></div>
+                            <div class="pipe-line pipe-4inch" style="width: 210px; height: 4px; top: 390px; left: 230px;"></div>
+                            <div class="pipe-line pipe-4inch" style="width: 4px; height: 30px; top: 390px; left: 228px;"></div>
+                            <div class="pipe-line pipe-4inch" style="width: 4px; height: 30px; top: 450px; left: 228px;"></div>
+                            <div class="pipe-label" style="top: 370px; left: 270px;">4"-CS-150#</div>
+
+                            <div class="pipe-line pipe-4inch" style="width: 210px; height: 4px; top: 390px; left: 440px;"></div>
+                            <div class="pipe-line pipe-4inch" style="width: 4px; height: 30px; top: 390px; left: 648px;"></div>
+                            <div class="pipe-line pipe-2inch" style="width: 2px; height: 30px; top: 450px; left: 649px;"></div>
+                            <div class="pipe-label" style="top: 370px; left: 510px;">4"-CS-150#</div>
+                            
+                            <div style="position: absolute; width: 70px; height: 2px; border-top: 2px dashed #1e293b; top: 152px; left: 530px;"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- RIGHT PANEL: Analysis Tool Results -->
+            <div class="results-panel">
+                <div class="panel-nav">
+                    <div class="panel-tab active" onclick="switchTab('tab-inventory', this)">
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect></svg>
+                        Inventory
+                    </div>
+                    <div class="panel-tab" onclick="switchTab('tab-search', this)">
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
+                        Search
+                    </div>
+                    <div class="panel-tab" onclick="switchTab('tab-map', this)">
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="18" cy="5" r="3"></circle><circle cx="6" cy="12" r="3"></circle></svg>
+                        Smart Map
+                    </div>
+                    <div class="panel-tab" onclick="switchTab('tab-hazop', this)">
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"></path></svg>
+                        HAZOP
+                    </div>
+                    <div class="panel-tab" onclick="switchTab('tab-color', this)">
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"></circle></svg>
+                        Colors
+                    </div>
+                    <div class="panel-tab" onclick="switchTab('tab-inspector', this)">
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="12 2 15 8.5 22 9.5 17 14 18.5 21 12 17.5 5.5 21 7 14 2 9.5 9 8.5 12 2"></polygon></svg>
+                        Inspector
+                    </div>
+                </div>
+
+                <div class="panel-content-wrapper">
+                    
+                    <!-- TOOL 1: INVENTORY GENERATOR -->
+                    <div class="panel-view active" id="tab-inventory">
+                        <div class="panel-section-title">
+                            <span>Detected Drawing Inventory</span>
+                            <button class="btn btn-secondary" onclick="triggerPDFExport()">
+                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" y1="13" x2="8" y2="13"></line><line x1="16" y1="17" x2="8" y2="17"></line><polyline points="10 9 9 9 8 9"></polyline></svg>
+                                Export to PDF
+                            </button>
+                        </div>
+
+                        <div class="filter-pills">
+                            <div class="filter-pill active" onclick="filterTable('all', this)">All</div>
+                            <div class="filter-pill" onclick="filterTable('equip', this)">Equipment</div>
+                            <div class="filter-pill" onclick="filterTable('valves', this)">Valves</div>
+                            <div class="filter-pill" onclick="filterTable('inst', this)">Instruments</div>
+                        </div>
+
+                        <table class="inventory-table">
+                            <thead>
+                                <tr>
+                                    <th>Tag Number</th>
+                                    <th>Entity Type</th>
+                                    <th>Specifications</th>
+                                </tr>
+                            </thead>
+                            <tbody id="inventory-tbody">
+                                <!-- Populated dynamically by app.js -->
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <!-- TOOL 2: SMART SEARCH -->
+                    <div class="panel-view" id="tab-search">
+                        <div class="panel-section-title">Smart Search Engine</div>
+                        <div class="search-box-container">
+                            <input type="text" class="search-input" id="search-input" placeholder="Search tag number e.g. P-101, V-101..." onkeyup="performSearch()">
+                            <button class="btn btn-primary" onclick="performSearch()">Search</button>
+                        </div>
+                        <div class="search-results-list" id="search-results">
+                            <!-- Populated dynamically by app.js -->
+                        </div>
+                    </div>
+
+                    <!-- TOOL 3: SMART MAP -->
+                    <div class="panel-view" id="tab-map">
+                        <div class="panel-section-title">Smart Map Connectivity Graphs</div>
+                        <div class="map-graph-box" id="map-graph-container">
+                            <div style="font-weight: bold; margin-bottom: 16px; color: var(--text-muted);">PIPELINE CONNECTIVITY TRACING</div>
+                            <!-- Populated dynamically by app.js -->
+                        </div>
+                    </div>
+
+                    <!-- TOOL 4: AI HAZOP ASSISTANT -->
+                    <div class="panel-view" id="tab-hazop">
+                        <div class="panel-section-title">AI HAZOP Study Suggestions</div>
+                        <div id="hazop-container">
+                            <!-- Populated dynamically by app.js -->
+                        </div>
+                    </div>
+
+                    <!-- TOOL 5: COLOR-CODED STATUS -->
+                    <div class="panel-view" id="tab-color">
+                        <div class="panel-section-title">Custom Rule Color Coding</div>
+                        <div style="color: var(--text-muted); font-size: 14px; margin-bottom: -10px;">Toggle switches below to apply custom color themes dynamically to the drawing canvas.</div>
+
+                        <div class="rule-card">
+                            <div class="rule-def"><div class="color-dot red"></div><div class="rule-text">Rule: Pipe Size == 2" (Red)</div></div>
+                            <div class="toggle-switch" onclick="toggleColorRule('pipe-2inch', 'color-code-red', this)"><div class="toggle-knob"></div></div>
+                        </div>
+
+                        <div class="rule-card">
+                            <div class="rule-def"><div class="color-dot blue"></div><div class="rule-text">Rule: Pipe Size == 4" (Blue)</div></div>
+                            <div class="toggle-switch" onclick="toggleColorRule('pipe-4inch', 'color-code-blue', this)"><div class="toggle-knob"></div></div>
+                        </div>
+
+                        <div class="rule-card">
+                            <div class="rule-def"><div class="color-dot green"></div><div class="rule-text">Status: Operational (P-101A)</div></div>
+                            <div class="toggle-switch" onclick="toggleColorRule('entity-p101a', 'color-code-green', this)"><div class="toggle-knob"></div></div>
+                        </div>
+
+                        <div class="rule-card">
+                            <div class="rule-def"><div class="color-dot yellow"></div><div class="rule-text">Status: Maintenance (P-101B)</div></div>
+                            <div class="toggle-switch" onclick="toggleColorRule('entity-p101b', 'color-code-yellow', this)"><div class="toggle-knob"></div></div>
+                        </div>
+                    </div>
+
+                    <!-- TOOL 6: AI INSPECTOR -->
+                    <div class="panel-view" id="tab-inspector">
+                        <div class="panel-section-title">AI Inspector Audit Report</div>
+                        <div id="inspector-container">
+                            <!-- Populated dynamically by app.js -->
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+
+    </main>
+
+    <!-- Modal Popups -->
+    <div class="modal-overlay" id="modal-container" onclick="closeModal(event)">
+        <div class="modal-card" onclick="event.stopPropagation()">
+            <div class="modal-title" id="modal-title">System Message</div>
+            <div class="modal-text" id="modal-text">Details here...</div>
+            <div class="modal-buttons">
+                <button class="btn btn-primary" onclick="closeModal(true)">Close Window</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Main Frontend Application Logic -->
+    <script src="/static/app.js"></script>
+</body>
+</html>
