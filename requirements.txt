@@ -1,7 +1,6 @@
 # CHAT-PID-AI Dependencies
 # ============================================================
-# Requires Python >= 3.12 for full feature support
-# (pyDEXPI requires Python 3.12+)
+# Python 3.11 compatible versions
 # ============================================================
 
 # Core Web Framework
@@ -37,9 +36,9 @@ requests==2.31.0
 # =============================================================================
 # pyDEXPI implements the DEXPI (Data Exchange in the Process Industry)
 # standard for machine-readable P&ID data.
-# Requires Python >= 3.12
+# Using version 1.1.0 for Python 3.11 compatibility
 
-pydexpi>=1.2.0
+pydexpi>=1.0.0,<1.2.0
 
 # =============================================================================
 # Thermodynamic Safety Audit Dependencies (NeqSim)
