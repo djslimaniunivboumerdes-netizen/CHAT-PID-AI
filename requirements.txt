@@ -1,14 +1,51 @@
+# CHAT-PID-AI Dependencies
+# ============================================================
+# Requires Python >= 3.12 for full feature support
+# (pyDEXPI requires Python 3.12+)
+# ============================================================
+
+# Core Web Framework
 fastapi==0.110.0
 uvicorn==0.28.0
 python-multipart==0.0.9
-sqlalchemy==2.0.28
+
+# Data Validation & Settings
 pydantic==2.6.4
+
+# Database ORM
+sqlalchemy==2.0.28
+
+# Computer Vision & OCR
 ultralytics==8.1.29
 easyocr==1.7.1
 opencv-python-headless==4.9.0.80
+pillow==10.2.0
+
+# Graph Analysis
 networkx==3.2.1
+
+# Export/Document Generation
 openpyxl==3.1.2
 reportlab==4.1.0
 pdf2image==1.17.0
-pillow==10.2.0
+
+# HTTP Client
 requests==2.31.0
+
+# =============================================================================
+# DEXPI Export Dependencies (pyDEXPI)
+# =============================================================================
+# pyDEXPI implements the DEXPI (Data Exchange in the Process Industry)
+# standard for machine-readable P&ID data.
+# Requires Python >= 3.12
+
+pydexpi>=1.2.0
+
+# =============================================================================
+# Thermodynamic Safety Audit Dependencies (NeqSim)
+# =============================================================================
+# NeqSim requires Java Runtime Environment (JRE) 8 or higher
+# JPype is used for Python-Java interoperability
+
+neqsim>=2.0.0
+jpype1>=1.4.0
